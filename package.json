@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "axios": "^1.8.3",
+    "delay": "^6.0.0",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
+    "https-proxy-agent": "^7.0.6",
+    "node-fetch": "^2.7.0",
+    "proxy-agent": "^6.5.0",
+    "random-user-agent": "^1.0.0",
+    "sleep-promise": "^9.1.0",
+    "socks-proxy-agent": "^8.0.5",
+    "web3": "^1.2.11"
+  }
+}
