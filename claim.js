@@ -208,6 +208,46 @@ function showMenu() {
     );
 }
 
+// Fungsi manual untuk memilih aksi
+async function manualRun() {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    rl.question(
+        "Pilih aksi:\n1. Generate Wallet\n2. Send Fee Eth\n3. Claim Faucet\n4. Send Token ATH\nPilih 1-4: ",
+        async (action) => {
+            switch (action) {
+                case '1':
+                    askForWalletCount();
+                    break;
+                case '2':
+                    await sendBulkTransactions();
+                    break;
+                case '3':
+                    await startClaim();
+                    break;
+                case '4':
+                    await sendTokens();
+                    break;
+                default:
+                    logError("Pilihan tidak valid.");
+            }
+
+            // Setelah pembuatan wallet, langsung jalankan auto-run
+            if (action === '1') {
+                logInfo("🔥 Memulai proses otomatis setelah pembuatan wallet...");
+                await sendBulkTransactions();
+                await startClaim();
+                await sendTokens();  // Loop akan terus berjalan untuk klaim & kirim token
+            }
+
+            rl.close();
+        }
+    );
+}
+
 // Fungsi auto run
 async function autoRun() {
     logInfo("🚀 Memulai proses otomatis...");
