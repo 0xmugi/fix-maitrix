@@ -22,7 +22,12 @@ Bot ini dirancang untuk membantu Anda mengklaim faucet secara otomatis dan mengi
 1. **Clone repositori ini:**
    ```bash
    git clone https://github.com/0xmugi/fix-maitrix.git
-   cd fix-maitrix 
+   cd fix-maitrix
+
+2. **Instal Node.js dan NPM:**
+   ```bash
+   sudo apt update
+   sudo apt install nodejs npm
    
 2. **Instal dependensi:**
    ```bash
