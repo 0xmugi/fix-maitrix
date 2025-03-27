@@ -25,9 +25,10 @@ Bot ini dirancang untuk membantu Anda mengklaim faucet secara otomatis dan mengi
    cd fix-maitrix 
    
 2. **Instal dependensi:**
+   ```bash
    npm install
 
-3. **Buat file .env: Salin template file .env.example ke .env dan sesuaikan isinya:**
+4. **Buat file .env: Salin template file .env.example ke .env dan sesuaikan isinya:**
    
    PRIVATE_KEY=<private_key_anda>
    
