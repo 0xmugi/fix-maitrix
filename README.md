@@ -42,7 +42,7 @@ Bot ini dirancang untuk membantu Anda mengklaim faucet secara otomatis dan mengi
    pk.txt: Daftar private key wallet yang digunakan untuk mengirim token ERC-20 (1 per baris)
 
 # Cara Penggunaan
- ## Mode Manual
+ # Mode Manual
     Pilih mode Manual untuk memilih aksi secara manual.
     
     Anda dapat memilih aksi berikut:
@@ -55,7 +55,7 @@ Bot ini dirancang untuk membantu Anda mengklaim faucet secara otomatis dan mengi
     
     Send Token ATH: Mengirim token ERC-20 dari wallet yang terdaftar di pk.txt ke alamat penerima.
  
- ## Mode Otomatis
+ # Mode Otomatis
     Pilih mode Auto Run untuk menjalankan proses otomatis:
     
     Klaim faucet untuk semua wallet.
