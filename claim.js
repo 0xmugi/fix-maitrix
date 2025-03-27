@@ -13,9 +13,9 @@ const AMOUNT_TO_SEND = ethers.parseEther("0.001");
 const ADDRESSES_FILE = "addresses.txt";
 const PRIVATE_KEYS_FILE = "pk.txt";
 const PROXIES_FILE = "proxies.txt";
-const INTERVAL_HOURS = 25; // Time interval for faucet claim & token send loop
-const RECEIVER_ADDRESS = process.env.RECEIVER_ADDRESS;  // Address of the receiver from .env
-const CA_TOKEN = process.env.CA_TOKEN;  // Token contract that will be sent
+const INTERVAL_HOURS = 25; // Interval waktu untuk klaim faucet & pengiriman token
+const RECEIVER_ADDRESS = process.env.RECEIVER_ADDRESS;  // Alamat penerima dari .env
+const CA_TOKEN = process.env.CA_TOKEN;  // Kontrak token yang akan dikirim
 
 function logSuccess(message) {
     console.log(`✅ ${message}`);
@@ -29,7 +29,7 @@ function logInfo(message) {
     console.log(`ℹ️ ${message}`);
 }
 
-// Input number of wallets to generate
+// Input jumlah wallet yang akan dibuat
 function askForWalletCount() {
     const rl = readline.createInterface({
         input: process.stdin,
@@ -62,9 +62,22 @@ function generateWallets(count) {
     fs.writeFileSync(ADDRESSES_FILE, addressData);
     fs.writeFileSync(PRIVATE_KEYS_FILE, privateKeyData);
     logSuccess(`${count} wallet berhasil dibuat!`);
+    runPostWalletCreationTasks();  // Langsung jalankan tugas setelah pembuatan wallet
 }
 
-// Send ETH to multiple wallets
+// Fungsi untuk menjalankan tugas setelah pembuatan wallet
+async function runPostWalletCreationTasks() {
+    logInfo("🔥 Memulai pengiriman ETH ke wallet...");
+    await sendBulkTransactions();
+
+    logInfo("🔥 Memulai klaim faucet...");
+    await startClaim();
+
+    logInfo("🔥 Memulai pengiriman token...");
+    await sendTokens();
+}
+
+// Kirim ETH ke beberapa wallet
 async function sendBulkTransactions() {
     if (!fs.existsSync(ADDRESSES_FILE)) {
         logError("File addresses.txt tidak ditemukan!");
@@ -172,6 +185,7 @@ async function sendTokens() {
         }
     }
 }
+
 // Menu utama untuk memilih mode
 function showMenu() {
     const rl = readline.createInterface({
@@ -194,50 +208,24 @@ function showMenu() {
     );
 }
 
-// Manual mode options
-function manualRun() {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-
-    rl.question(
-        "Pilih aksi:\n1. Generate Wallet\n2. Send Fee Eth\n3. Claim Faucet\n4. Send Token ATH\nPilih 1-4: ",
-        async (action) => {
-            switch (action) {
-                case '1':
-                    askForWalletCount();
-                    break;
-                case '2':
-                    await sendBulkTransactions();
-                    break;
-                case '3':
-                    await startClaim();
-                    break;
-                case '4':
-                    await sendTokens();
-                    break;
-                default:
-                    logError("Pilihan tidak valid.");
-            }
-            rl.close();
-        }
-    );
-}
-
-// Auto mode function
+// Fungsi auto run
 async function autoRun() {
     logInfo("🚀 Memulai proses otomatis...");
-    await startClaim();
-    logInfo("🔄 Memulai pengiriman token setelah klaim faucet...");
-    await sendTokens();
-    logInfo(`⏳ Menunggu ${INTERVAL_HOURS} jam sebelum kirim ulang...`);
-    await new Promise(resolve => setTimeout(resolve, INTERVAL_HOURS * 60 * 60 * 1000)); // 25 jam
+
+    try {
+        await startClaim();
+        logInfo("🔄 Memulai pengiriman token setelah klaim faucet...");
+        await sendTokens();
+        logInfo(`⏳ Menunggu ${INTERVAL_HOURS} jam sebelum kirim ulang...`);
+        setTimeout(autoRun, INTERVAL_HOURS * 60 * 60 * 1000); // Loop otomatis setelah 25 jam
+    } catch (error) {
+        logError(`Terjadi kesalahan saat menjalankan autoRun: ${error.message}`);
+    }
 }
 
-// If addresses.txt doesn't exist, ask for wallet count and generate wallets
+// Jika file addresses.txt atau pk.txt tidak ada, minta jumlah wallet dan buat wallet
 if (!fs.existsSync(ADDRESSES_FILE) || !fs.existsSync(PRIVATE_KEYS_FILE)) {
     askForWalletCount();
 } else {
-    showMenu(); // Ask for mode selection
+    showMenu(); // Minta pemilihan mode
 }
