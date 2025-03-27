@@ -33,7 +33,7 @@ Bot ini dirancang untuk membantu Anda mengklaim faucet secara otomatis dan mengi
    ```bash
    npm install
 
-4. **Buat file .env: Salin template file .env.example ke .env dan sesuaikan isinya:**
+4. **Edit File .env TANPA TANDA <>:**
    ```bash
    PRIVATE_KEY=<private_key_anda>
    RECEIVER_ADDRESS=<alamat_penerima_token>
