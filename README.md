@@ -44,9 +44,7 @@ Bot ini dirancang untuk membantu Anda mengklaim faucet secara otomatis dan mengi
 # Cara Penggunaan
 ## Mode Manual
     Pilih mode Manual untuk memilih aksi secara manual.
-    
     Anda dapat memilih aksi berikut:
-    
     Generate Wallet: Membuat wallet baru dan menyimpan alamat serta private key.
     
     Send Fee Eth: Mengirim Ether ke wallet yang terdaftar di addresses.txt.
