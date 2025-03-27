@@ -29,11 +29,9 @@ Bot ini dirancang untuk membantu Anda mengklaim faucet secara otomatis dan mengi
    npm install
 
 4. **Buat file .env: Salin template file .env.example ke .env dan sesuaikan isinya:**
-   
+   ```bash
    PRIVATE_KEY=<private_key_anda>
-   
    RECEIVER_ADDRESS=<alamat_penerima_token>
-   
    CA_TOKEN=0x1428444Eacdc0Fd115dd4318FcE65B61Cd1ef399
 
 5. **Buat file proxies.txt:**
