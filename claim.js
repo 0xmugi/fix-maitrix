@@ -13,7 +13,6 @@ const AMOUNT_TO_SEND = ethers.parseEther("0.001");
 const ADDRESSES_FILE = "addresses.txt";
 const PRIVATE_KEYS_FILE = "pk.txt";
 const PROXIES_FILE = "proxies.txt";
-const INTERVAL_HOURS = 25; // Interval waktu untuk klaim faucet & pengiriman token
 const RECEIVER_ADDRESS = process.env.RECEIVER_ADDRESS;  // Alamat penerima dari .env
 const CA_TOKEN = process.env.CA_TOKEN;  // Kontrak token yang akan dikirim
 
@@ -249,19 +248,22 @@ async function manualRun() {
 }
 
 // Fungsi auto run
+// Fungsi auto run tanpa jeda
 async function autoRun() {
-    logInfo("🚀 Memulai proses otomatis...");
+    logInfo("🚀 Memulai proses otomatis tanpa jeda...");
 
-    try {
-        await startClaim();
-        logInfo("🔄 Memulai pengiriman token setelah klaim faucet...");
-        await sendTokens();
-        logInfo(`⏳ Menunggu ${INTERVAL_HOURS} jam sebelum kirim ulang...`);
-        setTimeout(autoRun, INTERVAL_HOURS * 60 * 60 * 1000); // Loop otomatis setelah 25 jam
-    } catch (error) {
-        logError(`Terjadi kesalahan saat menjalankan autoRun: ${error.message}`);
+    while (true) { // Looping terus-menerus
+        try {
+            await startClaim();
+            logInfo("🔄 Memulai pengiriman token setelah klaim faucet...");
+            await sendTokens();
+            logInfo("✅ Selesai satu loop, mengulang lagi...");
+        } catch (error) {
+            logError(`Terjadi kesalahan saat menjalankan autoRun: ${error.message}`);
+        }
     }
 }
+
 
 // Jika file addresses.txt atau pk.txt tidak ada, minta jumlah wallet dan buat wallet
 if (!fs.existsSync(ADDRESSES_FILE) || !fs.existsSync(PRIVATE_KEYS_FILE)) {
